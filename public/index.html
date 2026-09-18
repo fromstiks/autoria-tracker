@@ -1,0 +1,94 @@
+<!doctype html>
+  <html>
+  <head>
+  <meta charset="utf-8">
+  <style>
+    :root { color-scheme: light; }
+  body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#fff; color:#1a1a1a; padding:16px; }
+  h1 { font-size:18px; margin:0 0 4px 0; }
+  .sub { font-size:12px; color:#666; margin-bottom:14px; }
+  #wrap { max-width:1500px; margin:0 auto; overflow-x:auto; }
+  .gridjs-th { font-family: Arial, Helvetica, sans-serif !important; font-size:11px !important; background:#305496 !important; color:#fff !important; padding:6px 8px !important; }
+    .gridjs-td { font-family: Arial, Helvetica, sans-serif !important; font-size:12px !important; vertical-align:middle !important; padding:5px 8px !important; }
+  a.photolink { display:inline-block; padding:4px 10px; background:#305496; color:#fff; border-radius:4px; text-decoration:none; font-size:12px; }
+    a.photolink:hover { background:#1f3a6e; }
+  a.phototh { display:inline-block; }
+  a.phototh img { width:64px; height:46px; object-fit:cover; border-radius:4px; border:1px solid #ddd; display:block; }
+  a.adlink { color:#0563C1; text-decoration:underline; font-size:13px; }
+  .note { font-size:11px; color:#888; margin-top:12px; line-height:1.5; }
+</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/theme/mermaid.min.css" integrity="sha384-jZvDSsmGB9oGGT/4l9bHXGoAv1OxvG/cFmSo0dZaSqmBgvQTKDBFAMftlXTmMbNW" crossorigin="anonymous">
+  </head>
+  <body>
+  <div id="wrap">
+    <h1>Виборка авто — AUTO.RIA («Обране»)</h1>
+    <div class="sub">18 позицій. Клік по заголовку колонки — сортування. Пошук — над таблицею.</div>
+    <div id="grid"></div>
+    <div class="note">
+      Дані зібрані з розділу «Обране» на auto.ria.com (рекламні «Пропозиції дня» не враховувались). Пробіг — з поля «Пробіг» у самому оголошенні (від продавця). Клікніть на фото, щоб відкрити його в повному розмірі в новій вкладці. Ford Fiesta 2005 (останній рядок): оголошення станом на 18.09.2026 позначене як видалене, ціну оновлено до 2800 $.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/gridjs.umd.js" integrity="sha384-/XXDzxe4FsGiAe50i/u9pY/Vy/uX654MHB1xoc1BJNnH1WXHhqHga9g3q5tF4gj7" crossorigin="anonymous"></script>
+  <script>
+const cars = [
+    ["Ford Fusion", 2003, 3198, "250 тис.км", "https://auto.ria.com/uk/auto_ford_fusion_40414952.html", "https://cdn3.riastatic.com/photosnew/auto/photo/ford_fusion__657254539hd.webp", "Бензин, 1.6 л", "Передній", "Ручна / Механіка", "Сірий"],
+    ["Ford Fiesta", 2007, 3000, "192 тис.км", "https://auto.ria.com/uk/auto_ford_fiesta_40336976.html", "https://cdn3.riastatic.com/photosnew/auto/photo/ford_fiesta__655967038hd.webp", "Газ пропан-бутан / Бензин, 1.3 л", "—", "Ручна / Механіка", "Сірий металік"],
+    ["Hyundai Getz", 2007, 3300, "121 тис.км", "https://auto.ria.com/uk/auto_hyundai_getz_40180242.html", "https://cdn3.riastatic.com/photosnew/auto/photo/hyundai_getz__650905395hd.webp", "Бензин, 1.4 л", "Передній", "Ручна / Механіка", "Синій"],
+    ["Ford Fusion", 2003, 2700, "222 тис.км", "https://auto.ria.com/uk/auto_ford_fusion_40237368.html", "https://cdn3.riastatic.com/photosnew/auto/photo/ford_fusion__652397384hd.webp", "Бензин, 1.6 л", "Передній", "Ручна / Механіка", "Сірий металік"],
+    ["Volkswagen Polo", 2003, 2900, "220 тис.км", "https://auto.ria.com/uk/auto_volkswagen_polo_38347904.html", "https://cdn3.riastatic.com/photosnew/auto/photo/volkswagen_polo__600943063hd.webp", "Бензин, 1.39 л", "Передній", "Ручна / Механіка", "Сірий металік"],
+    ["Toyota Corolla", 2003, 3500, "210 тис.км", "https://auto.ria.com/uk/auto_toyota_corolla_39750537.html", "https://cdn3.riastatic.com/photosnew/auto/photo/toyota_corolla__639045823hd.webp", "Бензин", "—", "Ручна / Механіка", "Синій"],
+    ["Toyota Corolla", 2002, 3400, "237 тис.км", "https://auto.ria.com/uk/auto_toyota_corolla_40396719.html", "https://cdn3.riastatic.com/photosnew/auto/photo/toyota_corolla__656767117hd.webp", "Бензин, 1.4 л", "Передній", "Ручна / Механіка", "Червоний металік"],
+    ["Hyundai Getz", 2003, 3150, "300 тис.км", "https://auto.ria.com/uk/auto_hyundai_getz_40000024.html", "https://cdn3.riastatic.com/photosnew/auto/photo/hyundai_getz__645439474hd.webp", "Бензин, 1.34 л", "Передній", "Ручна / Механіка", "Сірий"],
+    ["Dodge Avenger", 2007, 3500, "200 тис.км", "https://auto.ria.com/uk/auto_dodge_avenger_40433759.html", "https://cdn3.riastatic.com/photosnew/auto/photo/dodge_avenger__657759096hd.webp", "Бензин", "—", "Автомат", "Сірий"],
+    ["Ford Fiesta", 2005, 3200, "235 тис.км", "https://auto.ria.com/uk/auto_ford_fiesta_38479640.html", "https://cdn3.riastatic.com/photosnew/auto/photo/ford_fiesta__604021878hd.webp", "Газ пропан-бутан / Бензин, 1.39 л", "Передній", "Ручна / Механіка", "Сірий"],
+    ["Honda Civic", 2004, 2999, "200 тис.км", "https://auto.ria.com/uk/auto_honda_civic_40417955.html", "https://cdn3.riastatic.com/photosnew/auto/photo/honda_civic__657333264hd.webp", "Бензин, 1.6 л", "Передній", "Автомат", "Бежевий"],
+    ["Skoda Fabia", 2005, 3300, "230 тис.км", "https://auto.ria.com/uk/auto_skoda_fabia_39933784.html", "https://cdn3.riastatic.com/photosnew/auto/photo/skoda_fabia__644160900hd.webp", "Газ пропан-бутан / Бензин, 1.2 л", "Передній", "Ручна / Механіка", "Білий"],
+    ["Mercedes-Benz A-Class", 2003, 3500, "279 тис.км", "https://auto.ria.com/uk/auto_mercedes-benz_a-class_39420807.html", "https://cdn3.riastatic.com/photosnew/auto/photo/mercedes-benz_a-class__629705975hd.webp", "Бензин, 1.4 л", "Передній", "Ручна / Механіка", "Сірий металік"],
+    ["Nissan Micra", 2003, 3499, "127 тис.км", "https://auto.ria.com/uk/auto_nissan_micra_40383027.html", "https://cdn3.riastatic.com/photosnew/auto/photo/nissan_micra__656382093hd.webp", "Газ пропан-бутан / Бензин, 1.39 л", "Передній", "Ручна / Механіка", "Сірий металік"],
+    ["Volkswagen Fox", 2010, 3500, "230 тис.км", "https://auto.ria.com/uk/auto_volkswagen_fox_40082344.html", "https://cdn3.riastatic.com/photosnew/auto/photo/volkswagen_fox__648234192hd.webp", "Бензин, 1.2 л", "Передній", "Ручна / Механіка", "Червоний"],
+    ["Opel Astra", 2004, 3300, "240 тис.км", "https://auto.ria.com/uk/auto_opel_astra_40268480.html", "https://cdn3.riastatic.com/photosnew/auto/photo/opel_astra__653821819hd.webp", "Бензин, 1.6 л", "Передній", "Робот", "Бежевий"],
+    ["Ford Focus C-Max", 2003, 3800, "208 тис.км", "https://auto.ria.com/uk/auto_ford_focus-c-max_40378285.html", "https://cdn3.riastatic.com/photosnew/auto/photo/ford_focus-c-max__656254747hd.webp", "Бензин, 1.8 л", "Передній", "Ручна / Механіка", "Сірий"],
+    ["Ford Fiesta", 2005, 2800, "240 тис.км", "https://auto.ria.com/uk/auto_ford_fiesta_39712388.html", "https://cdn3.riastatic.com/photosnew/auto/photo/ford_fiesta__637988300hd.webp", "Бензин, 1.4 л", "—", "Автомат", "Червоний"]
+  ];
+
+const data = cars.map((c, i) => [
+  i + 1,
+  c[0],
+  gridjs.html(`<a class="phototh" href="${c[5]}" target="_blank" rel="noopener"><img src="${c[5]}" alt="фото" loading="lazy"></a>`),
+    c[1],
+    c[2],
+    c[3],
+    c[6],
+    c[7],
+    c[8],
+    c[9],
+    gridjs.html(`<a class="adlink" href="${c[4]}" target="_blank" rel="noopener">Відкрити</a>`)
+  ]);
+
+new gridjs.Grid({
+    columns: [
+  { name: "№", width: "40px" },
+  { name: "Марка / Модель", width: "130px" },
+  { name: "Фото", width: "80px", sort: false },
+  { name: "Рік", width: "55px" },
+  { name: "Ціна ($)", width: "75px" },
+  { name: "Пробіг", width: "80px" },
+  { name: "Двигун", width: "130px" },
+  { name: "Привід", width: "70px" },
+  { name: "Коробка передач", width: "110px" },
+  { name: "Колір", width: "90px" },
+  { name: "Оголошення", width: "90px", sort: false }
+  ],
+    data: data,
+    sort: true,
+    search: true,
+    pagination: { limit: 20 },
+    style: {
+    table: { fontFamily: "Arial, Helvetica, sans-serif" }
+    }
+              }).render(document.getElementById("grid"));
+</script>
+  </body>
+  </html>
+  
